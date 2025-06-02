@@ -3,14 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amplify 静的サイト</title>
+    <title>Amplify 認証デモ (HTML/JS)</title>
+    <!-- style.css へのリンク (適宜作成してください) -->
     <link rel="stylesheet" href="style.css">
     <!-- AWS Amplify JS ライブラリ -->
     <script src="https://unpkg.com/aws-amplify@latest/dist/aws-amplify.min.js"></script>
 </head>
 <body>
-    <h1>こんにちは、Amplify!</h1>
-    <p>これはAmplifyでホスティングされた静的なウェブサイトです。</p>
+    <header>
+        <h1>Amplify ユーザー認証デモ</h1>
+    </header>
+
+    <main>
+        <div id="messageArea" style="color: #d9534f; margin-bottom: 15px; padding: 10px; border: 1px solid transparent; border-radius: 4px; min-height: 1.5em;">
+            <!-- メッセージがここに表示されます -->
+        </div>
+
+        <div id="unauthenticatedLinks" style="margin-bottom: 20px;">
+            <a href="#" id="showSignUpLink">新しいアカウントを作成</a> |
+            <a href="#" id="showSignInLink">サインイン</a>
+        </div>
+
+        <!-- サインアップセクション -->
+        <section id="signUpSection" style="display: none; border: 1px solid #ddd; padding: 20px; margin-bottom: 20px;">
+            <h2>アカウント作成</h2>
+            <form id="signUpForm">
+                <div>
+                    <label for="signUpEmail">Eメールアドレス:</label><br>
+                    <input type="email" id="signUpEmail" name="signUpEmail" required autocomplete="username">
+                </div>
+                <div style="margin-top: 10px;">
+                    <label for="signUpPassword">パスワード (8文字以上):</label><br>
+                    <input type="password" id="signUpPassword" name="signUpPassword" required minlength="8" autocomplete="new-password">
+                </div>
+                <button type="submit" style="margin-top: 15px;">登録</button>
+            </form>
+        </section>
+
+        <!-- 確認コード入力セクション -->
+        <section id="confirmSignUpSection" style="display: none; border: 1px solid #ddd; padding: 20px; margin-bottom: 20px;">
+            <h2>アカウントの確認</h2>
+            <form id="confirmSignUpForm">
+                <div>
+                    <label for="confirmEmail">Eメールアドレス:</label><br>
+                    <input type="email" id="confirmEmail" name="confirmEmail" required readonly>
+                </div>
+                <div style="margin-top: 10px;">
+                    <label for="confirmationCode">確認コード:</label><br>
+                    <input type="text" id="confirmationCode" name="confirmationCode" required>
+                </div>
+                <button type="submit" style="margin-top: 15px;">確認して有効化</button>
+            </form>
+        </section>
+
+        <!-- サインインセクション -->
+        <section id="signInSection" style="display: none; border: 1px solid #ddd; padding: 20px; margin-bottom: 20px;">
+            <h2>サインイン</h2>
+            <form id="signInForm">
+                <div>
+                    <label for="signInEmail">Eメールアドレス:</label><br>
+                    <input type="email" id="signInEmail" name="signInEmail" required autocomplete="username">
+                </div>
+                <div style="margin-top: 10px;">
+                    <label for="signInPassword">パスワード:</label><br>
+                    <input type="password" id="signInPassword" name="signInPassword" required autocomplete="current-password">
+                </div>
+                <button type="submit" style="margin-top: 15px;">サインイン</button>
+                <!-- パスワード忘れの機能を追加する場合はここにリンク -->
+            </form>
+        </section>
+
+        <!-- 認証済みコンテンツセクション -->
+        <section id="authenticatedSection" style="display: none; border: 1px solid #ddd; padding: 20px; margin-bottom: 20px;">
+            <h2>ようこそ！</h2>
+            <p>ユーザー: <strong id="userEmail"></strong></p>
+            <p>あなたは正常にサインインしています。</p>
+            <button id="signOutButton" type="button" style="margin-top: 15px;">サインアウト</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>© Amplify Demo</p>
+    </footer>
+
+    <!-- スクリプトの読み込み順序が重要です -->
+    <!-- 1. Amplifyライブラリ (既にheadで読み込み済みですが、bodyの終わりに置くのが一般的な場合もあります) -->
+    <!-- <script src="https://unpkg.com/aws-amplify@latest/dist/aws-amplify.min.js"></script> -->
+
+    <!-- 2. Amplifyバックエンド設定ファイル (amplify push後にプロジェクトルートに生成されます) -->
+    <script src="./aws-exports.js"></script>
+
+    <!-- 3. カスタムJavaScriptファイル -->
     <script src="script.js"></script>
 </body>
 </html>
